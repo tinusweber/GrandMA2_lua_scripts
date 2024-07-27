@@ -1,0 +1,32 @@
+-- Lua Script for grandMA2
+-- This script assigns groups to fixtures based on their fixture numbers and labels them accordingly.
+-- tinusweber https://github.com/tinusweber
+
+local function getFixtureName(fixtureNumber)
+    local handle = gma.show.getobj.handle('Fixture ' .. fixtureNumber)
+    return gma.show.getobj.name(handle)
+end
+
+local function labelGroupWithFixtureName(groupNumber, fixtureNumber)
+    local fixtureName = getFixtureName(fixtureNumber)
+    if fixtureName then
+        gma.cmd('Label Group ' .. groupNumber .. ' "' .. fixtureName .. '"')
+    else
+        gma.echo('No name found for fixture ' .. fixtureNumber)
+    end
+end
+
+local function assignAndLabelFixtures()
+    -- Clear all previous selections.
+    gma.cmd('ClearAll')
+    
+    -- Fixture numbers whose names need to be retrieved.
+    local fixturesToLabel = {1, 101, 201, 301, 401, 501, 601}
+    
+    -- Loop through the list of fixtures and assign names to the groups.
+    for i, fixtureNumber in ipairs(fixturesToLabel) do
+        labelGroupWithFixtureName(i, fixtureNumber)  -- Group numbers correspond to the index in the list.
+    end
+end
+
+assignAndLabelFixtures()
